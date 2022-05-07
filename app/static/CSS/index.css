@@ -8,21 +8,44 @@
     font-family: 'Roboto Slab', serif;
 }
 #home{
-    background-color: #E5EAEC;
+    background-color: #f6f6f9;
 }
+/* navbar styles */
 #color{
-    color: #363A50;
+    color: #F18F3B;
     font-weight: bold;
 }
 #logout-btn{
-    background-color: #96A2B3;
+    background-color: #F18F3B;
     margin-left: 4%;
     padding: 0 30px 0 30px ;
     color: #ffffff;
 }
 #login-btn{
-    background-color: #AB938B;
+    background-color: #958EC7;
     padding-left: 30px;
     padding-right: 30px;
     color: #ffffff;
+}
+#navbarNavAltMarkup .navbar-nav .nav-link:hover{
+    color: #F18F3B;
+}
+/* End of navbar styles */
+
+/* start of home styling */
+#introduction{
+    color: #363A50;
+    font-size: 3vh;
+    text-align: center;
+}
+#start{
+    background-color: #96A2B3;
+    color: #ffffff;
+    width: 20%;
+    height: 7vh;
+    margin: 2% 0 2% 0;
+}
+#start:hover{
+    color: #363A50;
+    background-color: #F18F3B;
 }
