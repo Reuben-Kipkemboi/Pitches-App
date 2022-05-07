@@ -7,3 +7,22 @@
     box-sizing: border-box;
     font-family: 'Roboto Slab', serif;
 }
+#home{
+    background-color: #E5EAEC;
+}
+#color{
+    color: #363A50;
+    font-weight: bold;
+}
+#logout-btn{
+    background-color: #96A2B3;
+    margin-left: 4%;
+    padding: 0 30px 0 30px ;
+    color: #ffffff;
+}
+#login-btn{
+    background-color: #AB938B;
+    padding-left: 30px;
+    padding-right: 30px;
+    color: #ffffff;
+}
