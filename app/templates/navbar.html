@@ -19,7 +19,7 @@
             <div class="navbar-nav ">
                 <!-- navbar-right can make it to the right -->
                 {% if current_user.is_authenticated %}
-                <li><a href="{{url_for('main.profile', uname = current_user.username)}}">{{user.username}}'s Profile</a></li>
+                <li><a href="{{url_for('main.profile', uname = current_user.username)}}"> Profile</a></li>
                 <li><a href="{{url_for('auth.logout')}}"> <button type="button" class="btn"id = "logout-btn">Logout</button></a></li>
                 {% else %}
                 <li><a href="{{url_for('auth.login')}}"> <button type="button" class="btn ms-auto" id="login-btn">Login</button></a></li>

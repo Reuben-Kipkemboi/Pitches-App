@@ -3,6 +3,23 @@
 {% block content %}
 <div class="container">
     <div class="row pt-5 mb-5">
+        <!--Display profile photo/user avatar of their choice-->
+        <div class="col-md-4">
+
+            {% if user.avatar %}
+            <img src="{{url_for('static',filename=user.avatar)}}" alt="user avatar" class="img-thumbnail">
+            {%else%}
+            <p>No User profile Image/Avatar</p>
+            {% endif %}
+
+            {% if user == current_user %}
+            <form  action="{{url_for('main.update_pic',uname=user.username)}}" method="post" enctype = "multipart/form-data">
+        
+              <input type="file"  name="photo" class="form-control" required>
+              <input type="submit">
+            </form>
+              {% endif %}
+        </div>
         <!-- displaying  Username-->
         <div class="col-md-4">
             <h3> {{user.username| capitalize}} </h3>
@@ -11,19 +28,14 @@
             {% if user.bio %}
             <p> {{user.bio}}</p>
             {%else%}
-            <p> {{user.username| capitalize}} has  no description</p>
+            <p> {{user.username| capitalize}} has no description</p>
             {% endif %}
         </div>
 
-        <!--Display profile photo/user avatar of their choice-->
-        <div class="col-md-4">
-
-            {% if user.avatar %}
-            <img src="{{url_for('static',filename=user.avatar)}}" alt="" class="img-thumbnail">
-            {%else%}
-            <p>No User profile Image/Avatar</p>
-            {% endif %}
-        </div>
+        {% if user == current_user %}
+        <a href="{{url_for('main.update_profile',uname=user.username)}}">
+            <button type="button" class="btn btn-outline-success">Edit My Profile</button></a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
