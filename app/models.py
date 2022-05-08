@@ -13,6 +13,8 @@ from . import login_manager
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+#Users table
+
 class User( UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key = True) 
@@ -36,20 +38,16 @@ class User( UserMixin, db.Model):
     
     def __repr__(self):
         return f'User {self.username}'
-    
-    
-    
-    
-    
+      
     
 #Pitch table
 
 class Pitch(db.Model):
     __tablename__ = 'pitchTypes'
     id = db.Column(db.Integer, primary_key = True)
-    title = db.Column(db.String(255),nullable = False)
+    name = db.Column(db.String(255),nullable = False)
     pitchcontent = db.Column(db.Text(), nullable = False)
-    time = db.Column(db.DateTime, default = datetime.utcnow)
+    Additiontime = db.Column(db.DateTime, default = datetime.utcnow)
     category = db.Column(db.String(255), index = True,nullable = False)
     
     def save_pitch(self):
@@ -58,3 +56,13 @@ class Pitch(db.Model):
   
     def __repr__(self):
         return f'Pitch {self.post}'
+    
+    
+#User votes tables
+#Upvote table
+
+class Upvotes(db.Model):
+    __tablename__ = 'user_upvotes'
+
+    id = db.Column(db.Integer,primary_key=True)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
