@@ -1,4 +1,5 @@
 from ast import Index
+import datetime
 import email
 from enum import unique
 
@@ -35,3 +36,25 @@ class User( UserMixin, db.Model):
     
     def __repr__(self):
         return f'User {self.username}'
+    
+    
+    
+    
+    
+    
+#Pitch table
+
+class Pitch(db.Model):
+    __tablename__ = 'pitchTypes'
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(255),nullable = False)
+    pitchcontent = db.Column(db.Text(), nullable = False)
+    time = db.Column(db.DateTime, default = datetime.utcnow)
+    category = db.Column(db.String(255), index = True,nullable = False)
+    
+    def save_pitch(self):
+        db.session.add(self)
+        db.session.commit()
+  
+    def __repr__(self):
+        return f'Pitch {self.post}'
