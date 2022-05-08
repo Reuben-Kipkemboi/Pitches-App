@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
+    <div class="row pt-5 mb-5">
         <!-- displaying  Username-->
         <div class="col-md-4">
             <h3> {{user.username| capitalize}} </h3>
@@ -11,7 +11,7 @@
             {% if user.bio %}
             <p> {{user.bio}}</p>
             {%else%}
-            <p> {{user.username| capitalize}} no description</p>
+            <p> {{user.username| capitalize}} has  no description</p>
             {% endif %}
         </div>
 
@@ -19,7 +19,7 @@
         <div class="col-md-4">
 
             {% if user.avatar %}
-            <img src="{{url_for('static',filename=user.profile_pic_path)}}" alt="" class="img-thumbnail">
+            <img src="{{url_for('static',filename=user.avatar)}}" alt="" class="img-thumbnail">
             {%else%}
             <p>No User profile Image/Avatar</p>
             {% endif %}
