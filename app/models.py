@@ -1,8 +1,5 @@
-from ast import Index
-import datetime
+from datetime import datetime
 import email
-from enum import unique
-
 from flask_login import UserMixin
 from . import db, login_manager
 #securing user passwords
@@ -22,6 +19,10 @@ class User( UserMixin, db.Model):
     email = db.Column(db.String(255),unique = True, index = True)
     avatar = db.Column(db.String())
     password_secure = db.Column(db.String(255))
+    pitches = db.relationship('Pitch', backref='user', lazy='dynamic')
+    comment = db.relationship('Comment', backref='user', lazy='dynamic')
+    upvote = db.relationship('Upvotes',backref='user',lazy='dynamic')
+    downvote = db.relationship('Downvotes',backref='user',lazy='dynamic')
     
     @property  #used to create a write only class property password
     def password(self):
@@ -34,7 +35,6 @@ class User( UserMixin, db.Model):
 
     def verify_password(self,password):
         return check_password_hash(self.password_secure,password)
-    
     
     def __repr__(self):
         return f'User {self.username}'
@@ -50,12 +50,21 @@ class Pitch(db.Model):
     Additiontime = db.Column(db.DateTime, default = datetime.utcnow)
     category = db.Column(db.String(255), index = True,nullable = False)
     
+    comment = db.relationship('Comment',backref='pitch',lazy='dynamic')
+    upvote = db.relationship('Upvote',backref='pitch',lazy='dynamic')
+    downvote = db.relationship('Downvote',backref='pitch',lazy='dynamic')
+    
     def save_pitch(self):
         db.session.add(self)
         db.session.commit()
+        
+    @classmethod
+    def get_user_pitches(cls,pitch_type_category):
+        user_pitches = Pitch.query.filter_by(category=pitch_type_category).all()
+        return user_pitches
   
     def __repr__(self):
-        return f'Pitch {self.post}'
+        return f'Pitch {self.pitchcontent}'
     
     
 #User votes tables
@@ -66,3 +75,55 @@ class Upvotes(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    pitch_id = db.Column(db.Integer,db.ForeignKey('pitchTypes.id'))
+      
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        
+    @classmethod
+    def get_upvotes(cls,id):
+        user_upvote = Upvotes.query.filter_by(pitch_id=id).all()
+        return user_upvote
+  
+#Downvotes table
+
+class Downvotes(db.Model):
+    __tablename__ = 'user_downvotes'
+
+    id = db.Column(db.Integer,primary_key=True)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    pitch_id = db.Column(db.Integer,db.ForeignKey('pitchTypes.id'))
+    
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        
+    @classmethod
+    def get_downvotes(cls,id):
+        user_downvote = Downvotes.query.filter_by(pitch_id=id).all()
+        return user_downvote
+    
+    
+#User comments table
+
+class Comment(db.Model):
+    __tablename__ = 'user_comments'
+    id = db.Column(db.Integer, primary_key=True)
+    comment_Message = db.Column(db.Text(),nullable = False)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable = False)
+    pitch_id = db.Column(db.Integer,db.ForeignKey('pitchTypes.id'),nullable = False)
+
+    def save_comments(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_comments(cls,pitch_id):
+        user_comments = Comment.query.filter_by(pitch_id=pitch_id).all()
+
+        return user_comments
+    
+
+
