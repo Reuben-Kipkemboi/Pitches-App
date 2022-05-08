@@ -2,6 +2,8 @@ from flask import Flask
 from config import config_options
 # making use of SQL ALchemy
 from flask_sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap
+
 
 #**********Handling user login************************
 from flask_login import LoginManager
@@ -32,5 +34,6 @@ def create_app(config_name):
     #Initializing the extensions from flask
     db.init_app(app)
     login_manager.init_app(app)
+    bootstrap = Bootstrap(app)
 
     return app

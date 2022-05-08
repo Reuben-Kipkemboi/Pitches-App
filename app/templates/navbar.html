@@ -16,9 +16,14 @@
                 <a class="nav-link" href="#">Business Pitch</a>
             </div>
 
-            <div class="navbar-nav">
-                <button type="button" class="btn ms-auto" id="login-btn">Login</button>
-                <button type="button" class="btn"id = "logout-btn">Logout</button>
+            <div class="navbar-nav ">
+                <!-- navbar-right can make it to the right -->
+                {% if current_user.is_authenticated %}
+                <li style="color:white;padding:15px;">{{current_user.username}}</li>
+                <li><a href="{{url_for('auth.logout')}}"> <button type="button" class="btn"id = "logout-btn">Logout</button></a></li>
+                {% else %}
+                <li><a href="{{url_for('auth.login')}}"> <button type="button" class="btn ms-auto" id="login-btn">Login</button></a></li>
+                {%endif%} 
             </div>
         </div>
     </div>
