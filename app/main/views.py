@@ -32,17 +32,14 @@ def new_pitch():
     form = PitchesForm()
     if form.validate_on_submit():
         name = form.name.data
-        pitchcontent = form.post.data
+        pitchcontent = form.content.data
         category = form.category.data
         user_id = current_user
-        new_pitch_object = Pitch(name = name, pitchcontent=pitchcontent,user_id=current_user._get_current_object().id,category=category)
+        new_pitch_object = Pitch( name = name, pitchcontent=pitchcontent,user_id=current_user._get_current_object().id,category=category)
         new_pitch_object.save_pitch()
         return redirect(url_for('main.index'))
         
     return render_template('newpitch.html', form = form)
-
-
-@main.route
 
 # The profile where users will view their previous pitches
 @main.route('/user/<uname>')

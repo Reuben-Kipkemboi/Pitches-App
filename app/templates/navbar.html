@@ -13,10 +13,11 @@
                 <a class="nav-link" href="#">Interview Pitch</a>
                 <a class="nav-link" href="#">Promotion Pitch</a>
                 <a class="nav-link" href="#">Sales Pitch</a>
-                <a class="nav-link" href="#">Business Pitch</a>
+                
             </div>
 
             <div class="navbar-nav ">
+                <a href="/create_new"><button type="button" class="btn"id = "create">Create Pitch</button></a></li></a>
                 <!-- navbar-right can make it to the right -->
                 {% if current_user.is_authenticated %}
                 <li><a href="{{url_for('main.profile', uname = current_user.username)}}"> Profile</a></li>

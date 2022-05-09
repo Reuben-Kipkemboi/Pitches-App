@@ -49,3 +49,11 @@
     color: #363A50;
     background-color: #F18F3B;
 }
+ .navbar-nav #create{
+    background-color: #B9575F;
+}
+
+#lines>.card{
+    background-color: #99ABAC;
+}
+
