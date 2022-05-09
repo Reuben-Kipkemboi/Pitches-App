@@ -43,16 +43,16 @@ class User( UserMixin, db.Model):
 #Pitch table
 
 class Pitch(db.Model):
-    __tablename__ = 'pitchTypes'
+    __tablename__ = 'pitch_types'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(255),nullable = False)
     pitchcontent = db.Column(db.Text(), nullable = False)
     Additiontime = db.Column(db.DateTime, default = datetime.utcnow)
     category = db.Column(db.String(255), index = True,nullable = False)
-    
-    comment = db.relationship('Comment',backref='pitch',lazy='dynamic')
-    upvote = db.relationship('Upvote',backref='pitch',lazy='dynamic')
-    downvote = db.relationship('Downvote',backref='pitch',lazy='dynamic')
+    pitch_author = db.Column(db.Integer,db.ForeignKey("users.id"))
+    comment = db.relationship('Comment',backref='pitch_types',lazy='dynamic')
+    upvote = db.relationship('Upvotes',backref='pitch_types',lazy='dynamic')
+    downvote = db.relationship('Downvotes',backref='pitch_types',lazy='dynamic')
     
     def save_pitch(self):
         db.session.add(self)
@@ -75,7 +75,7 @@ class Upvotes(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    pitch_id = db.Column(db.Integer,db.ForeignKey('pitchTypes.id'))
+    pitch_id = db.Column(db.Integer,db.ForeignKey('pitch_types.id'))
       
     def save(self):
         db.session.add(self)
@@ -83,7 +83,7 @@ class Upvotes(db.Model):
         
     @classmethod
     def get_upvotes(cls,id):
-        user_upvote = Upvotes.query.filter_by(pitch_id=id).all()
+        user_upvote = Upvotes.query.filter_by(pitch_types_id=id).all()
         return user_upvote
   
 #Downvotes table
@@ -93,8 +93,8 @@ class Downvotes(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    pitch_id = db.Column(db.Integer,db.ForeignKey('pitchTypes.id'))
-    
+    pitch_id = db.Column(db.Integer,db.ForeignKey('pitch_types.id'))
+    # kigibu@mailinator.com
     
     def save(self):
         db.session.add(self)
@@ -102,7 +102,7 @@ class Downvotes(db.Model):
         
     @classmethod
     def get_downvotes(cls,id):
-        user_downvote = Downvotes.query.filter_by(pitch_id=id).all()
+        user_downvote = Downvotes.query.filter_by(pitch_types_id=id).all()
         return user_downvote
     
     
@@ -113,7 +113,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment_Message = db.Column(db.Text(),nullable = False)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable = False)
-    pitch_id = db.Column(db.Integer,db.ForeignKey('pitchTypes.id'),nullable = False)
+    pitch_id = db.Column(db.Integer,db.ForeignKey('pitch_types.id'),nullable = False)
 
     def save_comments(self):
         db.session.add(self)
@@ -121,7 +121,7 @@ class Comment(db.Model):
 
     @classmethod
     def get_comments(cls,pitch_id):
-        user_comments = Comment.query.filter_by(pitch_id=pitch_id).all()
+        user_comments = Comment.query.filter_by(pitch_types_id=pitch_id).all()
 
         return user_comments
     
