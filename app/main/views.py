@@ -1,7 +1,8 @@
+from crypt import methods
 from flask import render_template,request,redirect,url_for, abort
 from . import main
 from ..models import User, Pitch, Upvotes, Downvotes, Comment
-from .forms import UpdateProfile
+from .forms import UpdateProfile,CommentForm, PitchesForm
 from .. import db,photos
 # we want to access the login functionality for some features eg voting and making a pitch
 from flask_login import UserMixin, login_required,current_user
@@ -12,11 +13,36 @@ from flask_login import UserMixin, login_required,current_user
 def index():
     
     all_pitches = Pitch.query.all()
+    interviews = Pitch.query.filter_by(category="Interview-Pitch").order_by(Pitch.Additiontime.desc()).all()
+    products = Pitch.query.filter_by(category="Product-Pitch").order_by(Pitch.Additiontime.desc()).all()
+    promotions = Pitch.query.filter_by(category="Promotion-Pitch").order_by(Pitch.Additiontime.desc()).all()
+    business = Pitch.query.filter_by(category="Business-Pitch").order_by(Pitch.Additiontime.desc()).all()
+    pickUp = Pitch.query.filter_by(category="'Pick-up").order_by(Pitch.Additiontime.desc()).all()
+    sales = Pitch.query.filter_by(category="'Pick-up").order_by(Pitch.Additiontime.desc()).all()
     
     
     title = "pitch & pitch"
     
-    return render_template('index.html', title=title, all_pitches = all_pitches)
+    return render_template('index.html', title=title, all_pitches = all_pitches, interviews=interviews, products=products, promotions=promotions, business=business, pickUp = pickUp, sales=sales)
+
+
+@main.route('/create_new', methods =['POST','GET'])
+@login_required
+def new_pitch():
+    form = PitchesForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        pitchcontent = form.post.data
+        category = form.category.data
+        user_id = current_user
+        new_pitch_object = Pitch(name = name, pitchcontent=pitchcontent,user_id=current_user._get_current_object().id,category=category)
+        new_pitch_object.save_pitch()
+        return redirect(url_for('main.index'))
+        
+    return render_template('newpitch.html', form = form)
+
+
+@main.route
 
 # The profile where users will view their previous pitches
 @main.route('/user/<uname>')

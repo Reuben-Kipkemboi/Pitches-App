@@ -13,7 +13,7 @@ class PitchesForm(FlaskForm):
     content = TextAreaField('Your Pitch', validators=[DataRequired()])
     
     category = SelectField('Category', choices=[('Product-Pitch','Product Pitch'),('Pick-up' ,'Pick Up Lines'),('Sales-Pitch','Sales Pitch'),('Interview-Pitch','Interview Pitch'),('Promotion-Pitch','Promotion Pitch'),('Business-Pitch','Business Pitch')], validators=[DataRequired()])
-    submit = SubmitField('Pitch with Pitch')
+    submit = SubmitField('Pitch with Impress')
 
 class CommentForm(FlaskForm):
     comment_content = TextAreaField('Provide feedback/Comments', validators=[DataRequired()])
