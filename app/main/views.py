@@ -83,3 +83,19 @@ def update_pic(uname):
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
 
+
+#User comments
+@main.route('/comment/<int:pitch_id>', methods = ['POST','GET'])
+@login_required
+def comment(pitch_id):
+    form = CommentForm()
+    pitch = Pitch.query.get(pitch_id)
+    comments = Comment.query.filter_by(pitch_id = pitch_id).all()
+    if form.validate_on_submit():
+        comment_Message = form.comment_content.data 
+        pitch_id = pitch_id
+        user_id = current_user._get_current_object().id
+        new_comment = Comment(comment_Message = comment_Message, user_id = user_id,pitch_id = pitch_id)
+        new_comment.save_comments()
+        return redirect(url_for('.comment', pitch_id = pitch_id))
+    return render_template('comments.html', form =form, pitch = pitch,comments=comments)
