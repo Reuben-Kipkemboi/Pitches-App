@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 # for image uploads
 from flask_uploads import UploadSet,configure_uploads,IMAGES
+from flask_mail import Mail
 
 
 #**********Handling user login************************
@@ -16,6 +17,7 @@ login_manager.login_view = 'auth.login'
 #********User login ends here***********************
 
 db = SQLAlchemy() # an instance
+mail= Mail()
 
 #User profile photo updates
 photos = UploadSet('photos',IMAGES)
@@ -23,6 +25,8 @@ photos = UploadSet('photos',IMAGES)
 def create_app(config_name):
     
     app = Flask(__name__)
+    
+    mail.init_app(app)
     
     # Creating the app configurations
     app.config.from_object(config_options[config_name])
@@ -42,5 +46,6 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
     bootstrap = Bootstrap(app)
+   
 
     return app

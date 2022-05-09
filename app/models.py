@@ -21,8 +21,7 @@ class User( UserMixin, db.Model):
     password_secure = db.Column(db.String(255))
     pitch_types = db.relationship('Pitch', backref='user', lazy='dynamic')
     comment = db.relationship('Comment', backref='user', lazy='dynamic')
-    upvote = db.relationship('Upvotes',backref='user',lazy='dynamic')
-    downvote = db.relationship('Downvotes',backref='user',lazy='dynamic')
+    
     
     @property  #used to create a write only class property password
     def password(self):
@@ -49,10 +48,10 @@ class Pitch(db.Model):
     pitchcontent = db.Column(db.Text(), nullable = False)
     Additiontime = db.Column(db.DateTime, default = datetime.utcnow)
     category = db.Column(db.String(255), index = True,nullable = False)
+    downvotes = db.Column(db.Integer, default=0)
+    upvotes = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     comment = db.relationship('Comment',backref='pitch_types',lazy='dynamic')
-    upvote = db.relationship('Upvotes',backref='pitch_types',lazy='dynamic')
-    downvote = db.relationship('Downvotes',backref='pitch_types',lazy='dynamic')
     
     def save_pitch(self):
         db.session.add(self)
@@ -66,46 +65,7 @@ class Pitch(db.Model):
     def __repr__(self):
         return f'Pitch {self.pitchcontent}'
     
-    
-#User votes tables
-#Upvote table
 
-class Upvotes(db.Model):
-    __tablename__ = 'user_upvotes'
-
-    id = db.Column(db.Integer,primary_key=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    pitch_id = db.Column(db.Integer,db.ForeignKey('pitch_types.id'))
-      
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-        
-    @classmethod
-    def get_upvotes(cls,id):
-        user_upvote = Upvotes.query.filter_by(pitch_types_id=id).all()
-        return user_upvote
-  
-#Downvotes table
-
-class Downvotes(db.Model):
-    __tablename__ = 'user_downvotes'
-
-    id = db.Column(db.Integer,primary_key=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    pitch_id = db.Column(db.Integer,db.ForeignKey('pitch_types.id'))
-    # kigibu@mailinator.com
-    
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-        
-    @classmethod
-    def get_downvotes(cls,id):
-        user_downvote = Downvotes.query.filter_by(pitch_types_id=id).all()
-        return user_downvote
-    
-    
 #User comments table
 
 class Comment(db.Model):
