@@ -1,6 +1,6 @@
 from flask import render_template,request,redirect,url_for, abort
 from . import main
-from ..models import User
+from ..models import User, Pitch, Upvotes, Downvotes, Comment
 from .forms import UpdateProfile
 from .. import db,photos
 # we want to access the login functionality for some features eg voting and making a pitch
@@ -11,10 +11,12 @@ from flask_login import UserMixin, login_required,current_user
 @main.route('/')
 def index():
     
+    all_pitches = Pitch.query.all()
+    
     
     title = "pitch & pitch"
     
-    return render_template('index.html', title=title)
+    return render_template('index.html', title=title, all_pitches = all_pitches)
 
 # The profile where users will view their previous pitches
 @main.route('/user/<uname>')
