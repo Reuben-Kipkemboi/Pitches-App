@@ -91,9 +91,8 @@
                 <div class="card-body">
                     <h4 class="card-title">{{pitch.category}}</h4>
                     <p class="card-text text-center">"{{pitch.pitchcontent}}"</p>
-                    <button type="button " class="btn btn-primary btn-sm">Upvote{{pitch.upvotes}}</button>
-                    <button type="button" class="btn btn-danger btn-sm">Downvote{{pitch.downvotes}}</button>
-
+                    <!-- <button type="button " class="btn btn-primary btn-sm">Upvote{{pitch.upvotes}}</button>
+                    <button type="button" class="btn btn-danger btn-sm">Downvote{{pitch.downvotes}}</button> -->
                     <a href="{{url_for('main.comment',pitch_id=pitch.id)}}"></a><button type="button" class="btn btn-outline-info">Make a comment</button></a>
 
                     <div class="card-footer">

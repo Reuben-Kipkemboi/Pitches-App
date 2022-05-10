@@ -112,7 +112,7 @@ def update_pic(uname):
 def comment(pitch_id):
     form = CommentForm()
     pitch = Pitch.query.get(pitch_id)
-    comments = Comment.get_comments(pitch_id)
+    usercomments_list = Comment.get_comments(pitch_id)
     if form.validate_on_submit():
         comment_Message = form.comment_content.data 
         pitch_id = pitch_id
@@ -120,7 +120,8 @@ def comment(pitch_id):
         new_comment = Comment(comment_Message = comment_Message, user_id = user_id,pitch_id = pitch_id)
         new_comment.save_comments()
         return redirect(url_for('.comment', pitch_id = pitch_id))
-    return render_template('comments.html', form =form, pitch = pitch,comments=comments)
+    return render_template('comments.html', form =form, pitch = pitch,usercomments_lists=usercomments_list)
+
 
 @main.route('/create_new', methods =['POST','GET'])
 @login_required
