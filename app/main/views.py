@@ -2,7 +2,7 @@ from flask import render_template,request,redirect,url_for, abort, flash
 
 from app.auth.views import login
 from . import main
-from ..models import User, Pitch,Comment
+from ..models import User, Pitch,Comment,Upvotes,Downvotes
 from .forms import UpdateProfile,CommentForm, PitchesForm
 from .. import db,photos
 # we want to access the login functionality for some features eg voting and making a pitch
@@ -102,31 +102,16 @@ def comment(pitch_id):
     # return redirect(url_for('.movie',id = movie.id ))
     return render_template('comments.html', form =form, pitch = pitch,usercomments=usercomments)
 
-@main.route('/create_new', methods =['POST','GET'])
+#user upvote
+@main.route('/upvote/<int:id>', methods=['POST', 'GET'])
 @login_required
-def downvote_pitch(pitch_id):
+def upvote(id):
+    pass
+   
+@main.route('/downvote/<int:id>', methods=['POST', 'GET'])
+@login_required
+def downvote(id):
+    pass
 
-  pitch = Pitch.query.filter_by(id=pitch_id).first()
-  if pitch:
-    pitch.downvotes -= 1
-    db.session.commit()
-    flash('Vote added ----', 'success')
-    return redirect(request.referrer)
-  else:
-    flash('No certain pitch', 'warning')
-    return redirect(url_for('main.index'))
-
-@main.route('/create_new', methods =['POST','GET'])
-@login_required  
-def upvote_pitch(pitch_id):
-  pitch = Pitch.query.filter_by(id=pitch_id).first()
-  if pitch:
-    pitch.upvotes += 1
-    db.session.commit()
-    flash('Vote added --|===--', 'success')
-    return redirect(request.referrer)
-  else:
-    flash('No certain pitch', 'warning')
-    return redirect(url_for('main.index'))
 
 
