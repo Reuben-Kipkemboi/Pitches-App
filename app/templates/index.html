@@ -85,22 +85,24 @@
     <div class="row row-cols-1 row-cols-md-3 g-4">
 
         {% for pitch in all_pitches%}
-
         <div class="col" id="pitches">
             <div class="card shadow p-3 mb-5 bg-body rounded">
                 <div class="card-body">
-                    <h4 class="card-title">{{pitch.category}}</h4>
+                    <h4 class="card-title">{{pitch.category}} {{pitch.id}}</h4>
                     <p class="card-text text-center">"{{pitch.pitchcontent}}"</p>
-                    <!-- <button type="button " class="btn btn-primary btn-sm">Upvote{{pitch.upvotes}}</button>
-                    <button type="button" class="btn btn-danger btn-sm">Downvote{{pitch.downvotes}}</button> -->
-                    <a href="{{url_for('main.comment',pitch_id=pitch.id)}}"></a><button type="button" class="btn btn-outline-info">Make a comment</button></a>
-
+                    <a href="/comment/{{pitch.id}}">
+                        <button type="button" class="btn btn-outline-info">Make a comment</button></a>
+                    <br>
+                    <div class="votes mt-3">
+                        <span>Thumbs Up <i class="fa-solid fa-thumbs-up"></i></span>
+                        <span><i class="fa-solid fa-thumbs-down ms-5">  </i>Thumbs Down</span>
+                        
+                    </div>
                     <div class="card-footer">
                         <h5> <span>
                                 {{pitch.name}}
                             </span></h5>
                         <h5>Date Added: {{pitch.Additiontime.strftime('%Y-%m-%d')}}</h5>
-
                     </div>
                 </div>
             </div>

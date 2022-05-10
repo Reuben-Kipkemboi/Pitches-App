@@ -117,7 +117,3 @@ class Downvotes(db.Model):
     def get_downvotes(cls,id):
         user_downvote = Downvotes.query.filter_by(pitch_id=id).all()
         return user_downvote
-
-    
-
-

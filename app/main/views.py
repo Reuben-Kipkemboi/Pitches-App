@@ -8,27 +8,6 @@ from .. import db,photos
 # we want to access the login functionality for some features eg voting and making a pitch
 from flask_login import login_required,current_user
 
-# def make_pitches(pitches):
-
-#     new_pitches = []
-#     for pitch in pitches:
-#         user = User.query.filter_by(id=pitch.user_id).first()
-#         category = category.query.filter_by(id=pitch.category_id).first()
-#         comments = Comment.query.filter_by(pitch_id=pitch.id).all()
-#         new_pitches.append({
-#         'id': pitch.id,
-#         'title': pitch.title,
-#         'content': pitch.content,
-#         'category': category,
-#         'user': user,
-#         'upvotes': pitch.upvotes,
-#         'downvotes': pitch.downvotes,
-#         })
-#     print(new_pitches)    
-#     return new_pitches
-    
-
-
 
 # Views
 @main.route('/')
@@ -41,8 +20,7 @@ def index():
     business = Pitch.query.filter_by(category="Business-Pitch").order_by(Pitch.Additiontime.desc()).all()
     pickUp = Pitch.query.filter_by(category="'Pick-up").order_by(Pitch.Additiontime.desc()).all()
     sales = Pitch.query.filter_by(category="'Pick-up").order_by(Pitch.Additiontime.desc()).all()
-    
-    
+      
     title = "pitch & pitch"
     
     return render_template('index.html', title=title, all_pitches = all_pitches, interviews=interviews, products=products, promotions=promotions, business=business, pickUp = pickUp, sales=sales)
@@ -112,16 +90,17 @@ def update_pic(uname):
 def comment(pitch_id):
     form = CommentForm()
     pitch = Pitch.query.get(pitch_id)
-    usercomments_list = Comment.get_comments(pitch_id)
+    usercomments = Comment.query.filter_by(pitch_id = pitch_id).all()
     if form.validate_on_submit():
-        comment_Message = form.comment_content.data 
+        comment_content = form.comment_content.data 
         pitch_id = pitch_id
         user_id = current_user._get_current_object().id
-        new_comment = Comment(comment_Message = comment_Message, user_id = user_id,pitch_id = pitch_id)
+        new_comment = Comment(comment_Message = comment_content, user_id = user_id,pitch_id = pitch_id)
         new_comment.save_comments()
-        return redirect(url_for('.comment', pitch_id = pitch_id))
-    return render_template('comments.html', form =form, pitch = pitch,usercomments_lists=usercomments_list)
-
+        
+        return redirect(url_for('.comment',pitch_id= pitch.id))
+    # return redirect(url_for('.movie',id = movie.id ))
+    return render_template('comments.html', form =form, pitch = pitch,usercomments=usercomments)
 
 @main.route('/create_new', methods =['POST','GET'])
 @login_required

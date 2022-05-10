@@ -1,12 +1,9 @@
 {% extends 'base.html' %}
-{% import 'macros.html' as macro%}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid" id="comments">
     <div class="row">
         <div class="col-md-4">
-            <h4>{{pitch.name}}</h4>
-            {{macro.displayPitchCommentsList(usercomments_list)}}
         </div>
         <div class="col-md-4">
 
